@@ -4,7 +4,7 @@ import rootReducer from 'Reducers';
 
 export function configureStore(preloadedState) {
     const store = createStore(
-      rootReducer, // root reducer with router state
+      rootReducer,
       preloadedState,
       compose(
         applyMiddleware(

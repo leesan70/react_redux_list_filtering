@@ -12,6 +12,8 @@
         "Helpers": ["./Helpers"],
         "Reducers" : ["./Reducers"],
         "Services" : ["./Services"],
+        "Views" : ["./Views"],
+        "Components" : ["./Components"]
       }
     },
     "exclude": ["Tests"]

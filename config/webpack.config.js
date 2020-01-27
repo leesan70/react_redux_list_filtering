@@ -307,6 +307,8 @@ module.exports = function(webpackEnv) {
         Helpers: path.join(__dirname, "..", "src", "Helpers"),
         Reducers: path.join(__dirname, "..", "src", "Reducers"),
         Services: path.join(__dirname, "..", "src", "Services"),
+        Views: path.join(__dirname, "..", "src", "Views"),
+        Components: path.join(__dirname, "..", "src", "Components"),
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding

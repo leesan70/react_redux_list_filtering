@@ -1,12 +1,29 @@
 import React from 'react';
 import './App.css';
+import { connect } from 'react-redux';
+import { StudentDisplayPage } from 'Views/StudentDisplayPage';
 
-function App() {
-  return (
-    <div className="App">
-      <p>HI</p>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <StudentDisplayPage />
+      </div>
+    );
+  } 
 }
 
-export { App };
+function mapState(state) {
+  return { };
+} 
+
+const actionCreators = {
+
+};
+
+const connectedApp = connect(mapState, actionCreators)(App);
+export { connectedApp as App };
