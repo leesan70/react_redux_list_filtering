@@ -1,65 +1,54 @@
-import React from 'react';
-
-import {
-    Paper,
-    Grid,
-    ButtonBase,
-    Typography,
-    Collapse,
-    Button,
-    List,
-    IconButton,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { Button, Collapse, Grid, TextField, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { mdiMinus, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiPlus, mdiMinus } from '@mdi/js';
+import { StudentActions } from "Actions";
+import React from 'react';
+import { connect } from "react-redux";
+
 
 const useStyles = theme => ({
     root: {
-      flexGrow: 1,
-      paddingBottom: theme.spacing(1),
+        flexGrow: 1,
+        paddingBottom: theme.spacing(1),
     },
     grid: {
-      padding: theme.spacing(2),
-      margin: 'auto',
-      borderBottom: 1,
-      borderRadius: "50%"
-    //   maxWidth: 500,
+        padding: theme.spacing(2),
+        margin: 'auto',
+        borderBottom: 1,
+        borderRadius: "50%"
     },
     image: {
-      width: 128,
-      height: 128,
+        width: 128,
+        height: 128,
     },
     img: {
-      margin: 'auto',
-      display: 'block',
-      borderRadius: '50%',
-      border: "1px solid #ddd",
-      width: 128,
-      height: 128,
-    //   maxWidth: '100%',
-    //   maxHeight: '100%',
+        margin: 'auto',
+        display: 'block',
+        borderRadius: '50%',
+        border: "1px solid #ddd",
+        width: 128,
+        height: 128,
     },
 });
 
 class Student extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             expandCollapse: false,
         };
-        
+
         this.toggleCollapse = this.toggleCollapse.bind(this);
+        this.handleAddTag = this.handleAddTag.bind(this);
     }
 
     render() {
-        // console.log(this.props);
-        const { classes, pic, firstName, lastName, email, grades, company, skill } = this.props;
+        const { classes, id, pic, firstName, lastName, email, grades, company, skill } = this.props;
         const { expandCollapse } = this.state;
         return (
-            <div className={classes.root} style={{borderBottom: "2px solid WhiteSmoke"}}>
+            <div className={classes.root} style={{ borderBottom: "2px solid WhiteSmoke" }}>
                 <Grid className={classes.grid}>
                     <Grid container spacing={2}>
                         <Grid item>
@@ -73,7 +62,7 @@ class Student extends React.Component {
                                     <Typography gutterBottom variant="h4" fontWeight="fontWeightBold">
                                         {firstName + " " + lastName}
                                     </Typography>
-                                    <Grid item xs style={{ marginLeft: 20, color: "grey" }}> 
+                                    <Grid item xs style={{ marginLeft: 20, color: "grey" }}>
                                         <Typography variant="body2">
                                             Email: {email}
                                         </Typography>
@@ -87,11 +76,12 @@ class Student extends React.Component {
                                             Average: {arrAvg(grades)}%
                                         </Typography>
                                         <Collapse in={this.state.expandCollapse}>
-                                            <List>
+                                            <Grid>
+                                                {<br></br>}
                                                 {
                                                     grades.map((grade, i) => {
                                                         return (
-                                                            <React.Fragment>
+                                                            <React.Fragment key={i}>
                                                                 <Typography variant="body2">
                                                                     {`Test ${i + 1}:\u00A0\u00A0\u00A0\u00A0${grade}%`}
                                                                 </Typography>
@@ -99,28 +89,51 @@ class Student extends React.Component {
                                                         );
                                                     })
                                                 }
-                                            </List>
+                                                <Grid>
+                                                    <Grid>
+                                                        {
+                                                            this.props.tags[id] && this.props.tags[id].map((tag, i) => {
+                                                                return (
+                                                                    <Button
+                                                                        key={i}
+                                                                        disableRipple
+                                                                        style={{ background: "WhiteSmoke", marginRight: 4 }}
+                                                                    >
+                                                                        {tag}
+                                                                    </Button>
+                                                                );
+                                                            })
+                                                        }
+                                                    </Grid>
+                                                    <Grid>
+                                                        <TextField
+                                                            className="add-tag-input"
+                                                            label="Add a tag"
+                                                            onKeyPress={(e) => {
+                                                                if (e.key === "Enter") {
+                                                                    this.handleAddTag(e);
+                                                                }
+                                                            }}
+                                                            onSubmit={this.handleAddTag}
+                                                            type={"text"}
+                                                            name={"AddATag"}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
                                         </Collapse>
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
                         <Grid item>
-                            <div onClick={this.toggleCollapse} class="expand-btn">
-                                <Icon path={expandCollapse ? mdiMinus : mdiPlus} size={2} color="grey"/>
+                            <div onClick={this.toggleCollapse} className="expand-btn">
+                                <Icon path={expandCollapse ? mdiMinus : mdiPlus} size={2} color="grey" />
                             </div>
                         </Grid>
                     </Grid>
                 </Grid>
             </div>
-            // <div>
-            //     <img style={{ borderRadius: '50%' }} align="left" src={pic} />
-            //     <h2>{firstName + " " + lastName}</h2>
-            //     <p>Email: {email}</p>
-            //     <p>Company: {company}</p>
-            //     <p>Skill: {skill}</p>
-            //     <p>Average: {arrAvg(grades)}%</p>
-            // </div>
         );
     }
 
@@ -130,8 +143,33 @@ class Student extends React.Component {
             expandCollapse: !this.state.expandCollapse,
         });
     }
+
+    handleAddTag(event) {
+        event.preventDefault();
+
+        const { id } = this.props;
+        const { value } = event.target;
+        if (value.length) {
+            this.props.addTag(id, value);
+            event.target.value = '';
+        }
+    }
 }
 
-const arrAvg = arr => arr.reduce((a,b) => a + Number(b), 0) / arr.length;
+const arrAvg = arr => arr.reduce((a, b) => a + Number(b), 0) / arr.length;
 
-export default withStyles(useStyles)(Student);
+function mapState(state) {
+    const { students } = state;
+    const { tags } = students;
+
+    return { tags };
+}
+
+const actionCreators = {
+    addTag: StudentActions.addTag,
+};
+
+const connectedStudent = connect(mapState, actionCreators)(Student);
+const connectedStudentWithStyles = withStyles(useStyles)(connectedStudent);
+export { connectedStudentWithStyles as Student };
+

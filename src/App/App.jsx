@@ -1,9 +1,8 @@
-import React from 'react';
-import './App.css';
-import { StudentDisplayPage } from 'Views/StudentDisplayPage';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import React from 'react';
+import { StudentDisplayPage } from 'Views/StudentDisplayPage';
+import './App.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -14,10 +13,6 @@ const theme = createMuiTheme({
 });
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <ThemeProvider theme={theme}>

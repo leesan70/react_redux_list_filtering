@@ -8,7 +8,13 @@ import * as serviceWorker from './serviceWorker';
 
 import 'typeface-roboto';
 
-const Store = configureStore({});
+const Store = configureStore({
+    students: {
+        tags: {
+            
+        }
+    }
+});
 
 ReactDOM.render(
     <Provider store={Store}>

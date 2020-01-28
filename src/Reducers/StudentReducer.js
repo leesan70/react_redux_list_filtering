@@ -19,6 +19,16 @@ export function students(state = {}, action) {
                 loading: false,
                 error: action.error,
             };
+        case StudentConstants.ADD_TAG:
+            const { id, tag } = action;
+            const newIdTagPair = state.tags.hasOwnProperty(id) ? [...state.tags[id], tag] : [tag];
+            return {
+                ...state,
+                tags: {
+                    ...state.tags,
+                    [id]: newIdTagPair,
+                },
+            };
         default:
             return state;
     }
