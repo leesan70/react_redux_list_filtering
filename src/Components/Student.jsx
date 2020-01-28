@@ -5,8 +5,15 @@ import {
     Grid,
     ButtonBase,
     Typography,
+    Collapse,
+    Button,
+    List,
+    IconButton,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
+import Icon from '@mdi/react';
+import { mdiPlus, mdiMinus } from '@mdi/js';
 
 const useStyles = theme => ({
     root: {
@@ -39,11 +46,18 @@ const useStyles = theme => ({
 class Student extends React.Component {
     constructor(props){
         super(props);
+
+        this.state = {
+            expandCollapse: false,
+        };
+        
+        this.toggleCollapse = this.toggleCollapse.bind(this);
     }
 
     render() {
         // console.log(this.props);
         const { classes, pic, firstName, lastName, email, grades, company, skill } = this.props;
+        const { expandCollapse } = this.state;
         return (
             <div className={classes.root} style={{borderBottom: "2px solid WhiteSmoke"}}>
                 <Grid className={classes.grid}>
@@ -72,17 +86,29 @@ class Student extends React.Component {
                                         <Typography variant="body2">
                                             Average: {arrAvg(grades)}%
                                         </Typography>
+                                        <Collapse in={this.state.expandCollapse}>
+                                            <List>
+                                                {
+                                                    grades.map((grade, i) => {
+                                                        return (
+                                                            <React.Fragment>
+                                                                <Typography variant="body2">
+                                                                    {`Test ${i + 1}:\u00A0\u00A0\u00A0\u00A0${grade}%`}
+                                                                </Typography>
+                                                            </React.Fragment>
+                                                        );
+                                                    })
+                                                }
+                                            </List>
+                                        </Collapse>
                                     </Grid>
                                 </Grid>
-                                {/* <Grid item>
-                                    <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                                        Remove
-                                    </Typography>
-                                </Grid> */}
                             </Grid>
-                            {/* <Grid item>
-                                <Typography variant="subtitle1">$19.00</Typography>
-                            </Grid> */}
+                        </Grid>
+                        <Grid item>
+                            <div onClick={this.toggleCollapse} class="expand-btn">
+                                <Icon path={expandCollapse ? mdiMinus : mdiPlus} size={2} color="grey"/>
+                            </div>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -96,6 +122,13 @@ class Student extends React.Component {
             //     <p>Average: {arrAvg(grades)}%</p>
             // </div>
         );
+    }
+
+    toggleCollapse() {
+        this.setState({
+            ...this.state,
+            expandCollapse: !this.state.expandCollapse,
+        });
     }
 }
 
