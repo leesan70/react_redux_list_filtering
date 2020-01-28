@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import { connect } from 'react-redux';
 import { StudentDisplayPage } from 'Views/StudentDisplayPage';
 
 class App extends React.Component {
@@ -17,13 +16,4 @@ class App extends React.Component {
   } 
 }
 
-function mapState(state) {
-  return { };
-} 
-
-const actionCreators = {
-
-};
-
-const connectedApp = connect(mapState, actionCreators)(App);
-export { connectedApp as App };
+export { App };

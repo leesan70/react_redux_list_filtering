@@ -10,7 +10,7 @@ export function students(state = {}, action) {
         case StudentConstants.GET_STUDENT_LIST_SUCCESS:
             return {
                 ...state,
-                studentList: action.students,
+                studentList: action.studentList,
                 loading: false,
             };
         case StudentConstants.GET_STUDENT_LIST_FAILURE:

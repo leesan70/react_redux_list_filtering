@@ -7,10 +7,9 @@ import { App } from 'App';
 import * as serviceWorker from './serviceWorker';
 
 const Store = configureStore({});
-const StoreContext = React.createContext(null);
 
 ReactDOM.render(
-    <Provider store={Store} context={StoreContext} >
+    <Provider store={Store}>
         <App />
     </Provider>,
     document.getElementById('root')
