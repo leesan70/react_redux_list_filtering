@@ -42,7 +42,7 @@ class Student extends React.Component {
     }
 
     render() {
-        console.log(this.props);
+        // console.log(this.props);
         const { classes, pic, firstName, lastName, email, grades, company, skill } = this.props;
         return (
             <div className={classes.root} style={{borderBottom: "2px solid WhiteSmoke"}}>

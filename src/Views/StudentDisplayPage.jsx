@@ -13,9 +13,20 @@ import {
     Toolbar,
 } from '@material-ui/core';
 
+import { debounce } from 'lodash';
+
 class StudentDisplayPage extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            searchFilters: {
+                searchByName: '',
+                searchByTag: '',
+            },
+        };
+
+        this.onInputChange = this.onInputChange.bind(this);
     }
 
     async componentDidMount() {
@@ -24,6 +35,7 @@ class StudentDisplayPage extends React.Component {
 
     render() {
         const students = this.props.studentList ? this.props.studentList.students : null;
+        const { searchByName, searchByTag } = this.state.searchFilters;
         return (
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Grid 
@@ -46,9 +58,10 @@ class StudentDisplayPage extends React.Component {
                                     id="name-input"
                                     label="Search by name"
                                     fullWidth={true}
-                                    onChange={null}
+                                    onChange={this.onInputChange}
                                     width="100%"
-                                    // style={{ position: 'fixed' }}
+                                    type={"text"}
+                                    name={"searchByName"}
                                 />
                             </div>
                             <div>
@@ -56,17 +69,24 @@ class StudentDisplayPage extends React.Component {
                                     id="tag-input"
                                     label="Search by tags"
                                     fullWidth={true}
+                                    onChange={this.onInputChange}
                                     width="100%"
-                                    // style={{ position: 'fixed' }}
+                                    type={"text"}
+                                    name={"searchByTag"}
                                 />
                             </div>
                         </form>
                     </Grid>
                     <List style={{maxHeight: '100%', overflow: 'auto'}} >
                         {
-                            students && students.map(student => {
-                                return <Student key={student.id} {...student}/>
-                            })
+                            students && 
+                                students.filter(student => {
+                                    const name = student.firstName + " " + student.lastName;
+                                    return name.toLocaleLowerCase().includes(searchByName.toLocaleLowerCase());
+                                })
+                                .map(student => {
+                                    return <Student key={student.id} {...student}/>
+                                })
                         }
                     </List>
                 </Grid>
@@ -74,10 +94,22 @@ class StudentDisplayPage extends React.Component {
         );
     }
 
-    onNameInputChange() {
-
+    // TODO: Use debounce
+    onInputChange(event) {
+        event.preventDefault();
+        const { name, value } = event.target;
+        const { searchFilters } = this.state;
+        this.setState({
+            searchFilters: {
+                ...searchFilters,
+                [name]: value
+            }
+        });
+        console.log(this.state);
     }
 }
+
+
 
 function mapState(state) {
     const { students } = state;
