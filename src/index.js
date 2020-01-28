@@ -6,6 +6,8 @@ import { configureStore } from 'Helpers';
 import { App } from 'App';
 import * as serviceWorker from './serviceWorker';
 
+import 'typeface-roboto';
+
 const Store = configureStore({});
 
 ReactDOM.render(
