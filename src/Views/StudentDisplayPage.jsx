@@ -30,6 +30,7 @@ class StudentDisplayPage extends React.Component {
         return (
             <Grid style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Grid 
+                    id="a"
                     style={{
                         width: '50%',
                         marginTop: window.innerHeight * .08,
@@ -38,10 +39,10 @@ class StudentDisplayPage extends React.Component {
                         alignItems: 'center',
                         background: 'white',
                         borderRadius: '10px',
-                        boxShadow: '0 0 10px LightGray'
+                        boxShadow: '0 0 10px LightGray',
                     }}
                 >
-                <Grid style={{ position: 'fixed', padding: 10, background: 'white', width: '50%', borderRadius: '10px', }}>
+                    <Grid style={{ position: 'fixed', padding: 10, background: 'white', width: '50%', borderRadius: '10px', zIndex: 1 }}>
                         <Grid>
                             <TextField
                                 id="name-input"
